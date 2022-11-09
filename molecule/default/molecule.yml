@@ -1,0 +1,44 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: docker
+
+provisioner:
+  name: ansible
+
+verifier:
+  name: ansible
+
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
+
+platforms:
+  - name: Debian-9
+    image: antonmircea/debian-python:9
+    pre_build_image: true
+    privileged: true
+  - name: Debian-10
+    image: antonmircea/debian-python:10
+    pre_build_image: true
+    privileged: true
+  - name: Debian-11
+    image: antonmircea/debian-python:11
+    pre_build_image: true
+    privileged: true
+
+  - name: Ubuntu-18
+    image: antonmircea/ubuntu-python:18.04
+    pre_build_image: true
+    privileged: true
+  - name: Ubuntu-20
+    image: antonmircea/ubuntu-python:20.04
+    pre_build_image: true
+    privileged: true
+  - name: Ubuntu-22
+    image: antonmircea/ubuntu-python:22.04
+    pre_build_image: true
+    privileged: true

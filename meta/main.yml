@@ -1,0 +1,26 @@
+galaxy_info:
+  author: Mircea-Pavel ANTON
+  namespace: mirceanton
+  role_name: template
+  description: Template Ansible role.
+  company: mirceanton
+
+  license: license (MIT)
+  standalone: true
+  min_ansible_version: "2.1"
+
+  platforms:
+    - name: Debian
+      versions:
+        - stretch   # 9
+        - buster    # 10
+        - bullseye  # 11
+    - name: Ubuntu
+      versions:
+        - bionic    # 18.04
+        - focal     # 20.04
+        - jammy     # 22.04
+
+  galaxy_tags: []
+
+dependencies: []
