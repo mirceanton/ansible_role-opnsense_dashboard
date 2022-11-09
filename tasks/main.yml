@@ -1,2 +1,14 @@
 ---
-# tasks file for template
+- name: "[PRE-TASK] Fetch config.xml from remote host"
+  ansible.builtin.fetch:
+    src: "{{ config_file }}"
+    dest: "{{ local_file }}"
+    flat: true
+
+- name: Edit the config file
+  delegate_to: localhost
+  notify: Upload config
+  ansible.builtin.import_tasks: config.yml
+
+- name: Flush Handlers
+  ansible.builtin.meta: flush_handlers

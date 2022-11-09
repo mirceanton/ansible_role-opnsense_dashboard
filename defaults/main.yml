@@ -1,2 +1,9 @@
 ---
-# defaults file for template
+# The path to the XML config file on the remote host
+config_file: /conf/config.xml
+
+# The path for the temporary XML file on the local host
+local_file: /tmp/config.xml
+
+# XML Path to the appropriate configuration section
+xpath: "/opnsense/interfaces"
