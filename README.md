@@ -1,35 +1,59 @@
-Role Name
-=========
+OPNsense: Dashboard
+===================
 
-A brief description of the role goes here.
+An Ansible role that configures some basic settings for the opnSense dashboard.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role requires the `lxml` python package to be installed on the host system.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+|                   Variable                    |      Type      |                                            Description                                            |
+| :-------------------------------------------: | :------------: | :-----------------------------------------------------------------------------------------------: |
+|          opnsense_dashboard_columns           |     `int`      |                        The number of columns to display on the dashboard.                         |
+|       opnsense_dashboard_traphic_graph        |    `string`    |            Comma separated list of interfaces to display in the traphic graph widget.             |
+|      opnsense_dashboard_widget_sequence       | `list(object)` |                        List of objects that contain widget configurations.                        |
+|  opnsense_dashboard_widget_sequence[].widget  |    `string     |                               The actual name of the widget itself.                               |
+| opnsense_dashboard_widget_sequence[].position |    `string`    |                                Positioning number for the widget.                                 |
+|  opnsense_dashboard_widget_sequence[].column  |    `string`    | The number of the column to show the widget in, in `colX` format, where `X` is the column number. |
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+N/A.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
 ```yaml
-- hosts: all
+- name: Configure the dashboard on all firewalls
+  hosts: opnsense
 
   roles:
-    - role: mirceanton.template
+    - role: mirceanton.opnsense_dashboard
       vars:
-        foo: bar
+        opnsense_dashboard_columns: 3
+        opnsense_dashboard_traphic_graph: wan,lan
+        opnsense_dashboard_widget_sequence:
+            - widget: system_information-container
+              position: '00000000'
+              column: col1
+            - widget: traffic_graphs-container
+              position: '00000001'
+              column: col4
+            - widget: services_status-container
+              position: '00000002'
+              column: col5
+            - widget: interface_list-container
+              position: '00000003'
+              column: col5
+            - widget: gateways-container
+              position: '00000004'
+              column: col5
 ```
 
 License
