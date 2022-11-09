@@ -8,7 +8,7 @@ on:
     branches: [ main ]
 
 jobs:
-  molecule:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,10 +21,10 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies.
-        run: pip3 install yamllint ansible-lint ansible "molecule[lint,docker]"
+        run: pip3 install yamllint ansible-lint
 
-      - name: Install Galaxy dependencies.
-        run: ansible-galaxy collection install community.docker
-
-      - name: Run molecule
-        run: molecule test
+      - name: Run ansible-lint
+        run: ansible-lint .
+        
+      - name: Run yamllint
+        run: yamllint .
