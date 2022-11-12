@@ -1,13 +1,3 @@
 ---
-- name: "[POST-TASK] Back up current config.xml on remote host"
-  listen: Upload config
-  ansible.builtin.copy:
-    src: "{{ config_file }}"
-    dest: "{{ config_file }}.bak"
-    remote_src: true
-
-- name: "[POST-TASK] Upload modified config.xml on remote host"
-  listen: Upload config
-  ansible.builtin.copy:
-    src: "{{ local_file }}"
-    dest: "{{ config_file }}"
+- name: Reboot
+  ansible.builtin.reboot:

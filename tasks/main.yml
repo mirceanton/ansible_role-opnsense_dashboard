@@ -1,14 +1,45 @@
 ---
-- name: "[PRE-TASK] Fetch config.xml from remote host"
+- name: Fetch config.xml from remote host
+  changed_when: false
   ansible.builtin.fetch:
     src: "{{ config_file }}"
     dest: "{{ local_file }}"
     flat: true
+  
+- name: Get config file stats
+  delegate_to: localhost
+  ansible.builtin.stat:
+    path: "{{ local_file }}"
+  register: __old_file
 
 - name: Edit the config file
   delegate_to: localhost
-  notify: Upload config
   ansible.builtin.import_tasks: config.yml
 
-- name: Flush Handlers
-  ansible.builtin.meta: flush_handlers
+- name: Get config file stats
+  delegate_to: localhost
+  ansible.builtin.stat:
+    path: "{{ local_file }}"
+  register: __new_file
+
+- name: Upload modified config to remote host
+  notify: Reboot
+  when: __old_file.stat.checksum != __new_file.stat.checksum
+  block:
+    - name: Back up current config.xml on remote host
+      ansible.builtin.copy:
+        src: "{{ config_file }}"
+        dest: "{{ config_file }}-{{ ansible_date_time.iso8601_basic_short }}.bak"
+        remote_src: true
+
+    - name: Upload modified config.xml to remote host
+      ansible.builtin.copy:
+        src: "{{ local_file }}"
+        dest: "{{ config_file }}"
+
+- name: Remove temp file from localhost
+  changed_when: false
+  delegate_to: localhost
+  ansible.builtin.file:
+    path: "{{ local_file }}"
+    state: absent
