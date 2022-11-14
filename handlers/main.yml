@@ -1,2 +1,3 @@
 ---
-# handlers file for template
+- name: Reboot
+  ansible.builtin.reboot:
