@@ -1,24 +1,24 @@
 ---
-- name: Build widget list
+- name: Build Widget List
   ansible.builtin.set_fact:
     sequence_string: "{{ sequence_string | default('') }}{{ ',' if sequence_string is defined }}{{ item.widget }}:{{ item.position }}-{{ item.column }}:show"
   loop: "{{ opnsense_dashboard_widget_sequence }}"
 
-- name: Set sequence
+- name: Set Sequence
   community.general.xml:
     pretty_print: true
     path: "{{ local_file }}"
     xpath: "{{ xpath }}/sequence"
     value: "{{ sequence_string }}"
 
-- name: Set column count
+- name: Set Column Count
   community.general.xml:
     pretty_print: true
     path: "{{ local_file }}"
     xpath: "{{ xpath }}/column_count"
     value: "{{ opnsense_dashboard_columns | default('2') }}"
 
-- name: Configure trapich graphs widget
+- name: Configure Traphic Graphs Widget
   community.general.xml:
     pretty_print: true
     path: "{{ local_file }}"
